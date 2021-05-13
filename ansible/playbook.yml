@@ -1,0 +1,9 @@
+---
+- hosts: node 
+  roles:
+#    - ssh_authorized
+#    - hostname
+#    - apt_update
+#    - apt_install
+    - chia_install
+

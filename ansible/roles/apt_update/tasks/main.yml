@@ -1,0 +1,27 @@
+---
+ - name: apt-source bak
+   shell: mv /etc/apt/sources.list /etc/apt/sources.list.bak && touch /etc/apt/sources.list
+
+ - name: codename
+   shell:  lsb_release -a|awk '{print $2}'|tail -n 1
+   register: Codename
+
+ - name: apt-source update
+   shell:  /bin/echo {{ item }} >> /etc/apt/sources.list
+   with_items:
+      - deb http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }} main multiverse restricted universe
+      - deb http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-backports main multiverse restricted universe
+      - deb http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-proposed main multiverse restricted universe
+      - deb http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-security main multiverse restricted universe
+      - deb http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-updates main multiverse restricted universe
+      - deb-src http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }} main multiverse restricted universe
+      - deb-src http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-backports main multiverse restricted universe
+      - deb-src http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-proposed main multiverse restricted universe
+      - deb-src http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-security main multiverse restricted universe
+      - deb-src http://mirrors.aliyun.com/ubuntu/ {{ Codename.stdout }}-updates main multiverse restricted universe
+ - name: apt-update
+   shell: apt-get update
+
+ - name: apt-get upgrade
+   shell: apt-get upgrade -y
+

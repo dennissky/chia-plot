@@ -1,0 +1,32 @@
+---
+- name: rm chia
+  shell: rm -rf /root/chia-blockchain
+
+- name: clone chia
+  shell: |
+    git clone https://github.com/Chia-Network/chia-blockchain.git -b latest --recurse-submodules
+    ~/chia-blockchain
+  ignore_errors: yes
+
+- name: install chia
+  shell: cd chia-blockchain && sh install.sh
+
+- name: activate chia
+  shell: cd /root/chia-blockchain && chmod u+x activate && ./activate
+
+- name: env
+  shell: touch /etc/profile.d/chia.sh
+
+- name: rm -rf profile.d
+  shell: rm -rf /etc/profile.d/chia.sh
+
+- name: create profile.d
+  shell: /bin/echo {{ item }} >> /etc/profile.d/chia.sh
+  with_items:
+    - export CHIA_HOME=/root/chia-blockchain/venv
+    - export PATH=\$CHIA_HOME/bin:\$PATH
+
+- name: take effect
+  shell:  . /etc/profile
+
+

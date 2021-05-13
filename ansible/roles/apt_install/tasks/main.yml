@@ -1,0 +1,15 @@
+---
+- name: apt 安装wget|telnet|lrzsz|vim|git|curl|tree
+  yum:
+    name:
+      - wget
+      - telnet
+      - lrzsz
+      - vim
+      - git
+      - curl
+      - tree
+      - sshpass
+      - unzip
+      - wget
+    state: present
